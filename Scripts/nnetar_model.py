@@ -60,9 +60,14 @@ def run_nnetar_model(df, return_results=False):
 
     # Plotting
     future_dates = pd.date_range(start=df.index[-1], periods=31)[1:]
+    
+    # Append the last historical point to connect the lines visually
+    plot_dates = [df.index[-1]] + list(future_dates)
+    plot_preds = [df['Close'].iloc[-1]] + list(future_predictions_final.flatten())
+    
     fig1 = plt.figure(figsize=(10, 6))
     plt.plot(df.index, df['Close'], label='Historical Data')
-    plt.plot(future_dates, future_predictions_final, color='red', linestyle='--', label='Neural Net Forecast')
+    plt.plot(plot_dates, plot_preds, color='red', linestyle='--', label='Neural Net Forecast')
     plt.title('Neural Net 30-Day Forecast')
     plt.legend()
     if not return_results:

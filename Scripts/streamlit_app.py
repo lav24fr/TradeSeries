@@ -96,3 +96,6 @@ elif page == "NNETAR":
 
 st.sidebar.markdown("---")
 st.sidebar.info("Built with Streamlit")
+
+# Clean up Matplotlib global state to prevent memory leaks and the "More than 20 figures have been opened" warning
+plt.close('all')

@@ -34,9 +34,12 @@ def run_arima_model(df, return_results=False):
     n_periods = 30
     forecast_result = model_fit.forecast(steps=n_periods)
     
+    # Append the last historical point to connect the lines visually
+    plot_forecast = pd.concat([close_prices.iloc[-1:], forecast_result])
+    
     fig2 = plt.figure(figsize=(10, 6))
     plt.plot(close_prices.index, close_prices, label='Actual Data')
-    plt.plot(forecast_result.index, forecast_result, color='red', label='Forecast')
+    plt.plot(plot_forecast.index, plot_forecast, color='red', label='Forecast')
     plt.title('ARIMA 30-Day Forecast')
     plt.legend()
     if not return_results:

@@ -18,7 +18,7 @@ def run_prophet_model(df, return_results=False):
     forecast = model.predict(future)
 
     fig1 = model.plot(forecast)
-    plt.title('Prophet Forecast')
+    fig1.gca().set_title('Prophet Forecast')
     if not return_results:
         plt.show()
 

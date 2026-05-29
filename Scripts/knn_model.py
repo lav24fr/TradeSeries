@@ -40,9 +40,14 @@ def run_knn_model(df, return_results=False):
         current_input = np.append(current_input[:, 1:], next_pred).reshape(1, -1)
 
     future_dates = pd.date_range(start=df.index[-1], periods=31)[1:]
+    
+    # Append the last historical point to connect the lines visually
+    plot_dates = [df.index[-1]] + list(future_dates)
+    plot_preds = [df['Close'].iloc[-1]] + future_predictions
+    
     fig1 = plt.figure(figsize=(10, 6))
     plt.plot(df.index, df['Close'], label='Historical Data')
-    plt.plot(future_dates, future_predictions, color='red', linestyle='--', label='K-NN Forecast')
+    plt.plot(plot_dates, plot_preds, color='red', linestyle='--', label='K-NN Forecast')
     plt.title('K-NN 30-Day Forecast')
     plt.legend()
     if not return_results:

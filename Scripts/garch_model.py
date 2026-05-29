@@ -28,12 +28,22 @@ def run_garch_model(df, return_results=False):
     forecast_volatility = np.sqrt(forecasts.variance.values[-1, :])
     forecast_mean = forecasts.mean.values[-1, :]
 
+    # 30 business days starting from the next day
+    forecast_dates = pd.date_range(start=returns.index[-1], periods=31, freq='B')[1:]
+    
+    # Append the last historical point to connect the lines visually
+    plot_dates = [returns.index[-1]] + list(forecast_dates)
+    plot_mean = [returns.iloc[-1]] + list(forecast_mean)
+    
     fig2 = plt.figure(figsize=(10, 6))
     plt.plot(returns.index, returns, label='Returns')
-    plt.plot(pd.date_range(start=returns.index[-1], periods=30, freq='B'),
-             forecast_mean, color='red', label='Forecast Mean')
-    plt.fill_between(pd.date_range(start=returns.index[-1], periods=30, freq='B'),
-                     -forecast_volatility, forecast_volatility, color='gray', alpha=0.5, label='Volatility')
+    plt.plot(plot_dates, plot_mean, color='red', label='Forecast Mean')
+    
+    # 95% Confidence Interval (1.96 * volatility)
+    ci_lower = forecast_mean - 1.96 * forecast_volatility
+    ci_upper = forecast_mean + 1.96 * forecast_volatility
+    plt.fill_between(forecast_dates, ci_lower, ci_upper, color='gray', alpha=0.5, label='95% Confidence Interval')
+    
     plt.title('GARCH 30-Day Forecast of Returns')
     plt.legend()
     if not return_results:

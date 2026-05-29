@@ -43,6 +43,7 @@ def run_data_visualization(return_results=False, ticker='^GSPC', start_date='201
     ax2.set_title('Moving Average Convergence Divergence (MACD)')
     ax1.legend()
     ax2.legend()
+    fig2.tight_layout()
     if not return_results:
         plt.show()
 
