@@ -67,7 +67,7 @@ elif page == "GARCH":
         st.text(garch_fit.summary().as_text())
 
 elif page == "Prophet":
-    st.header("🔮 Prophet Model")
+    st.header("Prophet Model")
     with st.spinner("Fitting Prophet Model..."):
         # The script renames columns if they have 'GSPC.'
         df_prophet = df.copy()
