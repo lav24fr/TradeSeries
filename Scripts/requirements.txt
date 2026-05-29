@@ -6,6 +6,6 @@
  statsmodels
  prophet
  scikit-learn
- tensorflow-cpu
+ tensorflow
  arch
  streamlit
