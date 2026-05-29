@@ -1,0 +1,11 @@
+pandas
+numpy
+matplotlib
+yfinance
+mplfinance
+statsmodels
+prophet
+scikit-learn
+tensorflow
+arch
+streamlit
