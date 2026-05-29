@@ -8,8 +8,7 @@ import arima_model as am
 import garch_model as gm
 import prophet_model as pm
 import knn_model as km
-import nnetar_model as nm
-
+# nnetar_model is imported dynamically below to handle missing tensorflow dependency gracefully.
 st.set_page_config(page_title="S&P 500 Forecasting", page_icon="📈", layout="wide")
 
 st.title("📈 S&P 500 Time Series Forecasting")
@@ -22,6 +21,10 @@ page = st.sidebar.radio("Select a Model / View", ["Data Overview", "ARIMA", "GAR
 def load_data():
     # Need auto_adjust=False for Prophet as it was used in prophet_model.py's __main__ block
     df = yf.download('^GSPC', start='2015-01-01', end='2020-06-04', auto_adjust=False)
+    # yfinance now returns a MultiIndex for columns (e.g. ('Close', '^GSPC')). 
+    # We drop the ticker level to restore the expected flat column structure ('Close', 'Open', etc.)
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.droplevel(1)
     # Prophet requires 'Close' to be flattened, which was handled inside the function
     return df
 
@@ -82,9 +85,14 @@ elif page == "K-NN":
 
 elif page == "NNETAR":
     st.header("🧠 NNETAR (LSTM Neural Network)")
-    with st.spinner("Training LSTM Model (this may take a minute)..."):
-        model, fig1 = nm.run_nnetar_model(df, return_results=True)
-    st.pyplot(fig1)
+    try:
+        import nnetar_model as nm
+        with st.spinner("Training LSTM Model (this may take a minute)..."):
+            model, fig1 = nm.run_nnetar_model(df, return_results=True)
+        st.pyplot(fig1)
+    except ImportError as e:
+        st.error("The NNETAR model requires TensorFlow, which is not available in the current environment.")
+        st.info("To fix this, go to Streamlit Cloud **Advanced Settings**, change your Python version to **3.11**, and add `tensorflow` back to your `requirements.txt`.")
 
 st.sidebar.markdown("---")
 st.sidebar.info("Built with Streamlit")
