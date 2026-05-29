@@ -1,11 +1,11 @@
-pandas
-numpy
-matplotlib
-yfinance
-mplfinance
-statsmodels
-prophet
-scikit-learn
-tensorflow
-arch
-streamlit
+ pandas
+ numpy
+ matplotlib
+ yfinance
+ mplfinance
+ statsmodels
+ prophet
+ scikit-learn
+ tensorflow-cpu
+ arch
+ streamlit
