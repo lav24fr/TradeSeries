@@ -9,9 +9,9 @@ import garch_model as gm
 import prophet_model as pm
 import knn_model as km
 # nnetar_model is imported dynamically below to handle missing tensorflow dependency gracefully.
-st.set_page_config(page_title="S&P 500 Forecasting", page_icon="📈", layout="wide")
+st.set_page_config(page_title="S&P 500 Forecasting", page_icon="", layout="wide")
 
-st.title("📈 S&P 500 Time Series Forecasting")
+st.title(" S&P 500 Time Series Forecasting")
 st.markdown("Analyze and forecast the S&P 500 index using various statistical and machine learning models.")
 
 st.sidebar.title("Navigation")
@@ -31,7 +31,7 @@ def load_data():
 df = load_data()
 
 if page == "Data Overview":
-    st.header("📊 Data Overview & Visualization")
+    st.header(" Data Overview & Visualization")
     st.write("Visualizing the S&P 500 closing prices, Bollinger Bands, MACD, and Stationarity Tests.")
     with st.spinner("Fetching data and generating plots..."):
         df_full, fig1, fig2, fig3, adf_result = dv.run_data_visualization(return_results=True)
@@ -44,7 +44,7 @@ if page == "Data Overview":
     st.pyplot(fig3)
 
 elif page == "ARIMA":
-    st.header("📉 ARIMA Model")
+    st.header("ARIMA Model")
     with st.spinner("Fitting ARIMA Model..."):
         model_fit, lb_test, fig1, fig2 = am.run_arima_model(df, return_results=True)
     st.pyplot(fig1)
@@ -57,7 +57,7 @@ elif page == "ARIMA":
         st.text(model_fit.summary().as_text())
 
 elif page == "GARCH":
-    st.header("📉 GARCH Model (Volatility)")
+    st.header("GARCH Model (Volatility)")
     with st.spinner("Fitting GARCH Model..."):
         garch_fit, fig1, fig2 = gm.run_garch_model(df, return_results=True)
     st.pyplot(fig1)
@@ -77,14 +77,14 @@ elif page == "Prophet":
     st.pyplot(fig2)
 
 elif page == "K-NN":
-    st.header("🤖 K-Nearest Neighbors (K-NN)")
+    st.header("K-Nearest Neighbors (K-NN)")
     with st.spinner("Fitting K-NN Model..."):
         knn_model, rmse, fig1 = km.run_knn_model(df, return_results=True)
     st.pyplot(fig1)
     st.success(f"**Rolling Origin RMSE:** {rmse:.4f}")
 
 elif page == "NNETAR":
-    st.header("🧠 NNETAR (LSTM Neural Network)")
+    st.header("NNETAR (LSTM Neural Network)")
     try:
         import nnetar_model as nm
         with st.spinner("Training LSTM Model (this may take a minute)..."):
